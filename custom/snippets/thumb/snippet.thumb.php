@@ -40,6 +40,10 @@ $phpThumbPath = isset($phpThumbPath) ? $phpThumbPath : 'assets/snippets/phpthumb
  * @see: https://github.com/kalessil/phpinspectionsea/blob/master/docs/probable-bugs.md#mkdir-race-condition
  */
 $path = MODX_BASE_PATH . $cacheFolder;
+$thumbNoImage = $phpThumbPath . 'noimage.png';
+
+$noImage = isset($noImage) ? (is_file(MODX_BASE_PATH . $noImage) ? $noImage : $thumbNoImage) : $thumbNoImage;
+
 if (!file_exists($path) && mkdir($path) && is_dir($path)) {
     chmod($path, $newFolderAccessMode);
 }
@@ -49,7 +53,9 @@ if (!empty($input)) {
 }
 
 if (empty($input) || !file_exists(MODX_BASE_PATH . $input)) {
-    $input = isset($noImage) ? $noImage : $phpThumbPath . 'noimage.png';
+    $input = $noImage;
+}elseif(!is_file(MODX_BASE_PATH . $input)){
+     $input = $noImage;
 }
 
 /**
